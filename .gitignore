@@ -1,0 +1,35 @@
+# University of Lucknow ERP — .gitignore
+
+# Compiled class files (don't push — Railway compiles)
+*.class
+
+# Logs
+*.log
+logs/
+
+# IDE files
+.idea/
+*.iml
+.eclipse/
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Tomcat work directory
+work/
+
+# Temp / Build scripts (local only)
+*.ps1
+bin/
+
+# Keep these:
+# WebContent/ — JSP, CSS, JS, WEB-INF (including .class files compiled)
+# src/        — Java source
+# sql/        — Database scripts
+# Dockerfile
+# railway.toml
