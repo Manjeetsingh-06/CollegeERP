@@ -64,24 +64,26 @@ public class MarksServlet extends HttpServlet {
         }
 
         int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-        String examType = request.getParameter("examType");
-        double maxMarks = Double.parseDouble(request.getParameter("maxMarks"));
-        String[] studentIds = request.getParameterValues("studentIds");
+        int studentId = Integer.parseInt(request.getParameter("studentId"));
+        
+        String internalStr = request.getParameter("internalMarks");
+        String externalStr = request.getParameter("externalMarks");
 
         List<Marks> batch = new ArrayList<>();
-        if (studentIds != null) {
-            for (String sId : studentIds) {
-                int studentId = Integer.parseInt(sId);
-                String marksStr = request.getParameter("marks_" + studentId);
-                if (marksStr != null && !marksStr.trim().isEmpty()) {
-                    double marksObtained = Double.parseDouble(marksStr.trim());
-                    Marks m = new Marks(0, studentId, subjectId, examType, marksObtained, maxMarks);
-                    batch.add(m);
-                }
-            }
+        
+        if (internalStr != null && !internalStr.trim().isEmpty()) {
+            double internalMarks = Double.parseDouble(internalStr.trim());
+            batch.add(new Marks(0, studentId, subjectId, "Internal", internalMarks, 40.0));
+        }
+        
+        if (externalStr != null && !externalStr.trim().isEmpty()) {
+            double externalMarks = Double.parseDouble(externalStr.trim());
+            batch.add(new Marks(0, studentId, subjectId, "External", externalMarks, 60.0));
         }
 
-        marksDAO.saveMarksBatch(batch);
+        if (!batch.isEmpty()) {
+            marksDAO.saveMarksBatch(batch);
+        }
         response.sendRedirect("marks?msg=Examination+Marks+Saved+Successfully");
     }
 
