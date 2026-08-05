@@ -3,126 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0"
-         metadata-complete="true">
+         metadata-complete="false">
 
     <display-name>University of Lucknow ERP</display-name>
 
-    <!-- ============ SERVLET DEFINITIONS ============ -->
-
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>servlet.LoginServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>servlet.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>StudentServlet</servlet-name>
-        <servlet-class>servlet.StudentServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>FacultyServlet</servlet-name>
-        <servlet-class>servlet.FacultyServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DepartmentServlet</servlet-name>
-        <servlet-class>servlet.DepartmentServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SubjectServlet</servlet-name>
-        <servlet-class>servlet.SubjectServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AttendanceServlet</servlet-name>
-        <servlet-class>servlet.AttendanceServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>MarksServlet</servlet-name>
-        <servlet-class>servlet.MarksServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>FeesServlet</servlet-name>
-        <servlet-class>servlet.FeesServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LibraryServlet</servlet-name>
-        <servlet-class>servlet.LibraryServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>NoticeServlet</servlet-name>
-        <servlet-class>servlet.NoticeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>TimetableServlet</servlet-name>
-        <servlet-class>servlet.TimetableServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ComplaintServlet</servlet-name>
-        <servlet-class>servlet.ComplaintServlet</servlet-class>
-    </servlet>
-
-    <!-- ============ SERVLET URL MAPPINGS ============ -->
-
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>StudentServlet</servlet-name>
-        <url-pattern>/students</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FacultyServlet</servlet-name>
-        <url-pattern>/faculty</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DepartmentServlet</servlet-name>
-        <url-pattern>/departments</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SubjectServlet</servlet-name>
-        <url-pattern>/subjects</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AttendanceServlet</servlet-name>
-        <url-pattern>/attendance</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MarksServlet</servlet-name>
-        <url-pattern>/marks</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FeesServlet</servlet-name>
-        <url-pattern>/fees</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LibraryServlet</servlet-name>
-        <url-pattern>/library</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>NoticeServlet</servlet-name>
-        <url-pattern>/notices</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TimetableServlet</servlet-name>
-        <url-pattern>/timetable</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ComplaintServlet</servlet-name>
-        <url-pattern>/complaints</url-pattern>
-    </servlet-mapping>
-
-    <!-- ============ WELCOME FILE ============ -->
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- ============ SESSION TIMEOUT (30 min) ============ -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
