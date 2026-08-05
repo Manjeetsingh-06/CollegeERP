@@ -3,7 +3,7 @@
 # Render.com compatible — Port 10000
 # =========================================================
 
-FROM tomcat:10.1-jdk17-temurin
+FROM tomcat:10.1-jdk21-temurin
 
 LABEL maintainer="Manjeet Singh"
 
