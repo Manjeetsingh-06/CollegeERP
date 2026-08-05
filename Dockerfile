@@ -1,6 +1,7 @@
 # =========================================================
 # Dockerfile — University of Lucknow ERP
 # Base: Apache Tomcat 10.1 + Java 17
+# Render.com compatible (dynamic PORT)
 # =========================================================
 
 FROM tomcat:10.1-jdk17-temurin
@@ -8,25 +9,27 @@ FROM tomcat:10.1-jdk17-temurin
 LABEL maintainer="Manjeet Singh"
 LABEL description="University of Lucknow ERP System"
 
-# Remove default Tomcat webapps (ROOT, examples, docs)
+# Remove default Tomcat webapps
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy compiled WAR (or exploded webapp) into Tomcat
+# Copy app to ROOT context (no /CollegeERP/ prefix needed)
 COPY WebContent/ /usr/local/tomcat/webapps/ROOT/
 
-# Copy MySQL JDBC driver to Tomcat lib (for global availability)
+# Copy MySQL JDBC driver to Tomcat lib
 COPY WebContent/WEB-INF/lib/mysql-connector-j.jar /usr/local/tomcat/lib/
 
-# ---- Environment variables (will be overridden by Railway) ----
-# These are defaults — Railway will inject real DB_* values
-ENV DB_HOST=localhost
-ENV DB_PORT=3306
-ENV DB_NAME=college_erp
-ENV DB_USER=root
-ENV DB_PASS=Manjeet@2007
+# Copy startup script (handles dynamic PORT from Render)
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
-# Tomcat port
+# Environment variables (Railway MySQL — overridden by Render env vars)
+ENV DB_HOST=altaria.proxy.rlwy.net
+ENV DB_PORT=17613
+ENV DB_NAME=railway
+ENV DB_USER=root
+ENV DB_PASS=DSSZvuVZgEvvUpackNOhnnnrPPnuuaLJ
+
+# Render uses dynamic PORT — startup script sets it
 EXPOSE 8080
 
-# Start Tomcat
-CMD ["catalina.sh", "run"]
+CMD ["/usr/local/bin/start.sh"]
