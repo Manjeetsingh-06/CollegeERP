@@ -25,7 +25,7 @@ COPY WebContent/WEB-INF/lib/mysql-connector-j.jar /usr/local/tomcat/lib/
 # DB credentials — Railway MySQL
 ENV DB_HOST=altaria.proxy.rlwy.net
 ENV DB_PORT=17613
-ENV DB_NAME=railway
+ENV DB_NAME=college_erp
 ENV DB_USER=root
 ENV DB_PASS=DSSZvuVZgEvvUpackNOhnnnrPPnuuaLJ
 
