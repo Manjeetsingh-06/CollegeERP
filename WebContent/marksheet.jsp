@@ -117,19 +117,32 @@
                 background: #e5e5e5 !important;
                 color: #000000 !important;
                 border: 1.5px solid #000 !important;
-                padding: 8px 10px !important;
-                font-size: 10.5pt !important;
+                padding: 7px 8px !important;
+                font-size: 9.5pt !important;
                 font-weight: bold !important;
                 text-align: center !important;
+                word-break: normal !important;
+                white-space: nowrap !important;
             }
             .data-table td, table td {
                 border: 1px solid #000 !important;
-                padding: 7px 10px !important;
-                font-size: 10pt !important;
+                padding: 6px 8px !important;
+                font-size: 9.5pt !important;
                 color: #000000 !important;
+                vertical-align: middle !important;
+                word-break: break-word !important;
             }
             .data-table tr { page-break-inside: avoid; }
-            .badge-gold { background: none !important; border: 1px solid #000 !important; color: #000 !important; padding: 2px 8px !important; font-size: 9pt !important; font-weight: bold !important; }
+            .badge-gold {
+                background: none !important;
+                border: 1.5px solid #000 !important;
+                color: #000 !important;
+                padding: 2px 6px !important;
+                font-size: 9pt !important;
+                font-weight: bold !important;
+                display: inline-block !important;
+                white-space: nowrap !important;
+            }
 
             /* PRINT SUMMARY & SIGNATURES */
             .summary-bar-print {
@@ -255,14 +268,22 @@
                 <!-- ---- MARKS TABLE ---- -->
                 <div class="table-responsive">
                 <table class="data-table">
+                    <colgroup>
+                        <col style="width:13%;">
+                        <col style="width:34%;">
+                        <col style="width:15%;">
+                        <col style="width:12%;">
+                        <col style="width:12%;">
+                        <col style="width:14%;">
+                    </colgroup>
                     <thead>
                         <tr>
-                            <th style="width: 15%;">Subject Code</th>
-                            <th style="width: 35%; text-align: left;">Subject Name</th>
-                            <th style="width: 15%;">Exam Type</th>
-                            <th style="width: 12%;">Max Marks</th>
-                            <th style="width: 13%;">Obtained</th>
-                            <th style="width: 10%;">Grade</th>
+                            <th>Sub. Code</th>
+                            <th style="text-align: left;">Subject Name</th>
+                            <th>Exam Type</th>
+                            <th>Max Marks</th>
+                            <th>Obtained</th>
+                            <th>Grade</th>
                         </tr>
                     </thead>
                     <tbody>

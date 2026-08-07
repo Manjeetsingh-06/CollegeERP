@@ -148,7 +148,7 @@
                         <p style="color: var(--text-muted); margin-top: 6px;">Payment Date: <strong style="color: #ffffff;"><%= payment.getPaymentDate() %></strong></p>
                     </div>
                     <div style="text-align: right;">
-                        <span class="badge-gold" style="font-size: 0.85rem; padding: 6px 16px;"><i class="fa-solid fa-shield-check"></i> STATUS: <%= payment.getStatus() %></span>
+                        <span class="badge-gold" style="font-size: 0.85rem; padding: 6px 16px;"><i class="fa-solid fa-shield-check"></i> STATUS: ✅ PAID</span>
                     </div>
                 </div>
 
