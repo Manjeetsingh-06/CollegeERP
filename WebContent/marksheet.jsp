@@ -196,9 +196,22 @@
                     <p>Generate and print official semester marksheets for any student.</p>
                 </div>
                 <% if (selectedStudent != null) { %>
-                <button onclick="window.print()" class="btn-primary no-print" style="width: auto;">
-                    <i class="fa-solid fa-print"></i> Print Official Marksheet
-                </button>
+                <div class="no-print" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <!-- Orientation Toggle -->
+                    <div style="display:flex;gap:6px;background:rgba(255,215,0,0.08);border:1px solid var(--gold-border);border-radius:8px;padding:4px;">
+                        <button type="button" id="btnPortrait" onclick="setOrientation('portrait')" 
+                            style="padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:var(--gold);color:#090d16;">
+                            <i class="fa-solid fa-rectangle-portrait"></i> Portrait
+                        </button>
+                        <button type="button" id="btnLandscape" onclick="setOrientation('landscape')"
+                            style="padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:transparent;color:var(--gold-light);">
+                            <i class="fa-solid fa-rectangle-landscape"></i> Landscape
+                        </button>
+                    </div>
+                    <button onclick="window.print()" class="btn-primary" style="width:auto;">
+                        <i class="fa-solid fa-print"></i> Print Official Marksheet
+                    </button>
+                </div>
                 <% } %>
             </header>
 
@@ -356,5 +369,26 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script>
+        // Dynamic Print Orientation Toggle
+        var currentOrientation = 'portrait';
+        var dynamicStyle = document.createElement('style');
+        dynamicStyle.id = 'printOrientationStyle';
+        dynamicStyle.innerHTML = '@page { size: A4 portrait; margin: 12mm 15mm; }';
+        document.head.appendChild(dynamicStyle);
+
+        function setOrientation(mode) {
+            currentOrientation = mode;
+            var margin = (mode === 'landscape') ? '10mm 12mm' : '12mm 15mm';
+            document.getElementById('printOrientationStyle').innerHTML =
+                '@page { size: A4 ' + mode + '; margin: ' + margin + '; }';
+
+            // Update button styles
+            document.getElementById('btnPortrait').style.background   = (mode === 'portrait')  ? 'var(--gold)' : 'transparent';
+            document.getElementById('btnPortrait').style.color        = (mode === 'portrait')  ? '#090d16' : 'var(--gold-light)';
+            document.getElementById('btnLandscape').style.background  = (mode === 'landscape') ? 'var(--gold)' : 'transparent';
+            document.getElementById('btnLandscape').style.color       = (mode === 'landscape') ? '#090d16' : 'var(--gold-light)';
+        }
+    </script>
 </body>
 </html>

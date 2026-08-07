@@ -134,11 +134,22 @@
                     <h2>💰 Master Student Fee Ledger</h2>
                     <p>Complete status report of students who have submitted fees vs pending dues.</p>
                 </div>
-                <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                    <button onclick="window.print()" class="btn-primary no-print" style="width: auto;">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                    <!-- Orientation Toggle -->
+                    <div style="display:flex;gap:6px;background:rgba(255,215,0,0.08);border:1px solid var(--gold-border);border-radius:8px;padding:4px;">
+                        <button type="button" id="btnPortrait" onclick="setOrientation('portrait')"
+                            style="padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:transparent;color:var(--gold-light);">
+                            <i class="fa-solid fa-rectangle-portrait"></i> Portrait
+                        </button>
+                        <button type="button" id="btnLandscape" onclick="setOrientation('landscape')"
+                            style="padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:var(--gold);color:#090d16;">
+                            <i class="fa-solid fa-rectangle-landscape"></i> Landscape
+                        </button>
+                    </div>
+                    <button onclick="window.print()" class="btn-primary" style="width:auto;">
                         <i class="fa-solid fa-print"></i> Print Official Ledger
                     </button>
-                    <a href="fees?action=pay" class="btn-secondary no-print" style="width: auto; text-decoration:none;">
+                    <a href="fees?action=pay" class="btn-secondary" style="width:auto;text-decoration:none;">
                         <i class="fa-solid fa-credit-card"></i> Process Payment
                     </a>
                 </div>
@@ -308,6 +319,24 @@
                     r.style.display = r.getAttribute('data-status') === 'pending' ? '' : 'none';
                 }
             });
+        }
+    </script>
+    <script>
+        // Dynamic Print Orientation Toggle — Default: Landscape (for wide ledger)
+        var dynamicStyle = document.createElement('style');
+        dynamicStyle.id = 'printOrientationStyle';
+        dynamicStyle.innerHTML = '@page { size: A4 landscape; margin: 10mm 12mm; }';
+        document.head.appendChild(dynamicStyle);
+
+        function setOrientation(mode) {
+            var margin = (mode === 'landscape') ? '10mm 12mm' : '12mm 15mm';
+            document.getElementById('printOrientationStyle').innerHTML =
+                '@page { size: A4 ' + mode + '; margin: ' + margin + '; }';
+
+            document.getElementById('btnPortrait').style.background  = (mode === 'portrait')  ? 'var(--gold)' : 'transparent';
+            document.getElementById('btnPortrait').style.color       = (mode === 'portrait')  ? '#090d16' : 'var(--gold-light)';
+            document.getElementById('btnLandscape').style.background = (mode === 'landscape') ? 'var(--gold)' : 'transparent';
+            document.getElementById('btnLandscape').style.color      = (mode === 'landscape') ? '#090d16' : 'var(--gold-light)';
         }
     </script>
 </body>
