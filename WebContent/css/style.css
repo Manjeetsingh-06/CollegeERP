@@ -725,21 +725,22 @@ select.form-control {
 }
 
 /* =========================================================
-   FLOATING DRAGGABLE AI CHATBOT WIDGET
+   FLOATING DRAGGABLE AI CHATBOT WIDGET (LEFT SIDE DEFAULT)
    ========================================================= */
 #aiChatbotTrigger {
     position: fixed;
     bottom: 24px;
-    right: 24px;
-    width: 58px;
-    height: 58px;
+    left: 24px;
+    right: auto;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
     color: #090d16;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 22px;
     box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
     cursor: grab;
     z-index: 99999;
@@ -757,27 +758,28 @@ select.form-control {
     position: absolute;
     top: 2px;
     right: 2px;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     background: #22c55e;
-    border: 2.5px solid #090d16;
+    border: 2px solid #090d16;
     border-radius: 50%;
 }
 
 #aiChatbotWidget {
     position: fixed;
-    bottom: 90px;
-    right: 24px;
-    width: 360px;
+    bottom: 85px;
+    left: 24px;
+    right: auto;
+    width: 380px;
     max-width: calc(100vw - 32px);
-    height: 480px;
-    max-height: calc(100vh - 120px);
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    height: 520px;
+    max-height: calc(100vh - 110px);
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--border-glass);
     border-radius: 16px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.15);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 215, 0, 0.15);
     display: none;
     flex-direction: column;
     z-index: 99999;
