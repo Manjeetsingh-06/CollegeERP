@@ -4,7 +4,7 @@ A complete College ERP web application built with:
 - **Backend**: Core Java + Jakarta Servlet (EE 10) + JSP
 - **Database**: MySQL 8.0
 - **Server**: Apache Tomcat 10.1
-- **Frontend**: Vanilla HTML + CSS (Glassmorphism) + JavaScript
+- **Frontend**: HTML + CSS (Glassmorphism) + JavaScript
 
 ## 🌐 Live Demo
 Deployed on Railway.app
