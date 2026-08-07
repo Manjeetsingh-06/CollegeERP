@@ -725,25 +725,25 @@ select.form-control {
 }
 
 /* =========================================================
-   FLOATING DRAGGABLE AI CHATBOT WIDGET (LEFT SIDE DEFAULT)
+   FLOATING DRAGGABLE AI CHATBOT WIDGET (RIGHT SIDE DEFAULT)
    ========================================================= */
 #aiChatbotTrigger {
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    right: auto;
-    width: 50px;
-    height: 50px;
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    left: auto !important;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
     color: #090d16;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
-    box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
+    font-size: 24px;
+    box-shadow: 0 10px 28px rgba(255, 215, 0, 0.45);
     cursor: grab;
-    z-index: 99999;
+    z-index: 9999999 !important;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     user-select: none;
     border: 2px solid rgba(255, 255, 255, 0.4);
@@ -758,18 +758,53 @@ select.form-control {
     position: absolute;
     top: 2px;
     right: 2px;
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     background: #22c55e;
-    border: 2px solid #090d16;
+    border: 2.5px solid #090d16;
     border-radius: 50%;
 }
 
+/* MAY I HELP YOU FLAG BUBBLE */
+.chatbot-flag-bubble {
+    position: absolute;
+    right: 68px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(15, 23, 42, 0.95);
+    color: var(--gold-light);
+    border: 1px solid var(--gold);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    animation: flagPulse 2s infinite ease-in-out;
+}
+
+.chatbot-flag-bubble::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px 0 6px 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent var(--gold);
+}
+
+@keyframes flagPulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.05); }
+}
+
 #aiChatbotWidget {
-    position: fixed;
-    bottom: 85px;
-    left: 24px;
-    right: auto;
+    position: fixed !important;
+    bottom: 90px !important;
+    right: 24px !important;
+    left: auto !important;
     width: 380px;
     max-width: calc(100vw - 32px);
     height: 520px;
@@ -782,7 +817,7 @@ select.form-control {
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 215, 0, 0.15);
     display: none;
     flex-direction: column;
-    z-index: 99999;
+    z-index: 9999999 !important;
     overflow: hidden;
     transition: opacity 0.2s ease, transform 0.2s ease;
     user-select: none;

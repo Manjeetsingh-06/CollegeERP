@@ -19,141 +19,128 @@ public class ChatbotServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        response.setContentType("application/json");
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedUser") == null) {
-            out.print("{\"reply\":\"⚠️ Session expired. Please login again to ask assistant.\"}");
+            out.print("{\"reply\":\"⚠️ Session expired. Please refresh and login again.\"}");
             return;
         }
 
         String message = request.getParameter("message");
         if (message == null || message.trim().isEmpty()) {
-            out.print("{\"reply\":\"Please ask a valid question! I am your University Assistant.\"}");
+            out.print("{\"reply\":\"Please enter a question to ask the ERP Assistant.\"}");
             return;
         }
 
-        String query = message.trim().toLowerCase(Locale.ROOT);
-        String reply = generateSmartReply(query);
+        String rawQuery = message.trim();
+        String query = rawQuery.toLowerCase(Locale.ROOT);
+        String reply = generateSmartReply(query, rawQuery);
 
-        // Escape JSON double quotes safely
-        String jsonReply = reply.replace("\"", "\\\"").replace("\n", "");
-        out.print("{\"reply\":\"" + jsonReply + "\"}");
+        // Sanitize string for valid JSON output
+        String safeReply = reply.replace("\\", "\\\\")
+                               .replace("\"", "\\\"")
+                               .replace("\r", "")
+                               .replace("\n", "<br>");
+
+        out.print("{\"reply\":\"" + safeReply + "\"}");
     }
 
-    private String generateSmartReply(String q) {
-        // GREETINGS & INTRO
-        if (q.contains("hello") || q.contains("hi") || q.contains("hey") || q.contains("namaste") || q.contains("kaise") || q.contains("who are you")) {
-            return "👋 <strong>Namaste! Welcome to Lucknow University ERP AI Helpdesk.</strong><br><br>"
-                 + "I have full knowledge of all 14 modules in this portal. You can ask me about:<br>"
-                 + "• 💳 Fees & Payment Ledgers<br>"
-                 + "• 📝 Marksheets & Examination Results<br>"
-                 + "• 📊 Attendance Tracking<br>"
-                 + "• 📚 Library Book Issue System<br>"
-                 + "• 📢 Notices, Timetable & Complaints<br>"
-                 + "• 🛡️ Admin, Faculty & Student Role Controls";
+    private String generateSmartReply(String q, String original) {
+        // Tokenize query into words for token-matching
+        String[] tokens = q.split("[\\s,?.!]+");
+
+        boolean hasFee = containsAny(tokens, "fee", "fees", "pay", "payment", "due", "dues", "tuition", "challan", "receipt", "paisa", "rupee", "money");
+        boolean hasMark = containsAny(tokens, "mark", "marks", "result", "results", "marksheet", "grade", "grades", "exam", "score", "cgpa", "percentage");
+        boolean hasAtt = containsAny(tokens, "attendance", "absent", "present", "bunk", "leave", "percent");
+        boolean hasLib = containsAny(tokens, "book", "books", "library", "issue", "return", "fine", "author", "isbn");
+        boolean hasNotice = containsAny(tokens, "notice", "notices", "circular", "event", "news", "announcement", "holiday");
+        boolean hasTime = containsAny(tokens, "timetable", "schedule", "routine", "class", "classes", "period", "slot");
+        boolean hasComp = containsAny(tokens, "complaint", "complaints", "help", "support", "issue", "problem", "query", "error", "bug");
+        boolean hasUser = containsAny(tokens, "student", "students", "faculty", "teacher", "admin", "department", "subject", "course");
+        boolean hasHi = containsAny(tokens, "hi", "hello", "hey", "namaste", "kaise", "who", "bot", "assistant");
+
+        if (hasHi && tokens.length <= 3) {
+            return "👋 <strong>Hello! I am Lucknow University ERP Assistant.</strong><br>"
+                 + "I am here to guide you with any ERP details. Ask me anything about Fees, Results, Attendance, Library, or Notices!";
         }
 
-        // FEES & PAYMENTS (SUPER DETAILED)
-        if (q.contains("fee") || q.contains("pay") || q.contains("due") || q.contains("tuition") || q.contains("receipt") || q.contains("paisa") || q.contains("challan")) {
-            return "💳 <strong>Comprehensive Fees & Finance Guide:</strong><br><br>"
-                 + "1. <strong>Student Online Payment:</strong> Go to <em>Pay Fees</em> in sidebar. Select semester, enter amount, choose payment mode (UPI/Card/NetBanking), and submit to receive instant digital receipt.<br>"
-                 + "2. <strong>Pending Fees Ledger (A4 Print):</strong> Admins can view complete unpaid balance list department-wise and print official university ledgers.<br>"
-                 + "3. <strong>Fee Structure Management:</strong> Admins can configure Tuition, Development, Exam, and Library fee components for each department & semester.<br><br>"
-                 + "👉 <a href='fees?action=pay' style='color:#ffd700;font-weight:700;'>Go to Pay Fees Portal</a>";
+        if (hasFee) {
+            return "💳 <strong>Fees & Payment Help:</strong><br>"
+                 + "• <strong>Pay Fees Online:</strong> Navigate to <em>Pay Fees</em> from sidebar, select your semester and payment method (UPI/Card).<br>"
+                 + "• <strong>Pending Dues Ledger:</strong> Admins can view complete unpaid fee lists under <em>Pending Fees Ledger</em>.<br>"
+                 + "• <strong>Fee Structure:</strong> Admins can set tuition, exam, and library fees per course.<br>"
+                 + "👉 <a href='fees?action=pay' style='color:#ffd700;font-weight:700;text-decoration:underline;'>Click here to Pay Fees</a>";
         }
 
-        // MARKS & RESULTS (SUPER DETAILED)
-        if (q.contains("mark") || q.contains("result") || q.contains("marksheet") || q.contains("grade") || q.contains("exam") || q.contains("score") || q.contains("cgpa")) {
-            return "📝 <strong>Marks & Official Marksheet Guide:</strong><br><br>"
-                 + "1. <strong>Faculty Evaluation:</strong> Teachers enter Internal Marks (Max 40) and External Exam Marks (Max 60) for subject students.<br>"
-                 + "2. <strong>A4 Official Transcript Print:</strong> Students can generate official University of Lucknow Marksheets showing Subject Codes, Credits, Obtained Marks, Percentage, and letter Grades (A+, A, B, C, D, F).<br>"
-                 + "3. <strong>Cumulative Score:</strong> System automatically calculates grand totals and percentage.<br><br>"
-                 + "👉 <a href='marks?action=marksheet' style='color:#ffd700;font-weight:700;'>Generate Marksheet Now</a>";
+        if (hasMark) {
+            return "📝 <strong>Marks & Marksheet Guidance:</strong><br>"
+                 + "• <strong>Enter Marks (Faculty):</strong> Teachers enter Internal (Max 40) and External (Max 60) marks.<br>"
+                 + "• <strong>View / Download Marksheet (Student):</strong> Go to <em>My Results / Marksheet</em> to generate and print your official A4 transcript with grades.<br>"
+                 + "👉 <a href='marks?action=marksheet' style='color:#ffd700;font-weight:700;text-decoration:underline;'>View Official Marksheet</a>";
         }
 
-        // ATTENDANCE (SUPER DETAILED)
-        if (q.contains("attendance") || q.contains("absent") || q.contains("present") || q.contains("percentage") || q.contains("bunk")) {
-            return "📊 <strong>Attendance Tracking System:</strong><br><br>"
-                 + "1. <strong>Faculty Entry:</strong> Teachers select department, semester, subject, date and mark students as Present, Absent, or Late.<br>"
-                 + "2. <strong>Student Analytics:</strong> Students view subject-wise attendance logs and overall percentage eligibility for university exams.<br><br>"
-                 + "👉 <a href='attendance' style='color:#ffd700;font-weight:700;'>View Attendance Log</a>";
+        if (hasAtt) {
+            return "📊 <strong>Attendance Portal Help:</strong><br>"
+                 + "• <strong>Mark Attendance:</strong> Faculty can mark students as Present, Absent, or Late daily.<br>"
+                 + "• <strong>Attendance Percentage:</strong> Students can check subject-wise attendance logs.<br>"
+                 + "👉 <a href='attendance' style='color:#ffd700;font-weight:700;text-decoration:underline;'>Check Attendance Log</a>";
         }
 
-        // LIBRARY (SUPER DETAILED)
-        if (q.contains("book") || q.contains("library") || q.contains("issue") || q.contains("return") || q.contains("fine") || q.contains("isbn")) {
-            return "📚 <strong>Library Management System:</strong><br><br>"
-                 + "1. <strong>Book Catalog:</strong> Admins can add books with Title, Author, Publisher, ISBN, and quantity.<br>"
-                 + "2. <strong>Issue & Return Tracking:</strong> Library logs issue dates and due dates. Late returns auto-calculate fine amounts per day.<br>"
-                 + "3. <strong>Student Portal:</strong> Check currently issued books and return deadlines.<br><br>"
-                 + "👉 <a href='library' style='color:#ffd700;font-weight:700;'>Open Library Catalog</a>";
+        if (hasLib) {
+            return "📚 <strong>Library Services:</strong><br>"
+                 + "• Search books by Title, Author, or ISBN number.<br>"
+                 + "• Check issued books, return deadlines, and late fines.<br>"
+                 + "👉 <a href='library' style='color:#ffd700;font-weight:700;text-decoration:underline;'>Open Library Catalog</a>";
         }
 
-        // TIMETABLE & NOTICES
-        if (q.contains("timetable") || q.contains("schedule") || q.contains("routine") || q.contains("class") || q.contains("period")) {
-            return "📅 <strong>Class Timetable & Room Allocation:</strong><br><br>"
-                 + "• View weekly class schedules organized by Department, Semester, Day of Week, Time Slot, and Assigned Faculty.<br>"
-                 + "👉 <a href='timetable' style='color:#ffd700;font-weight:700;'>View Weekly Timetable</a>";
+        if (hasTime) {
+            return "📅 <strong>Class Timetable:</strong><br>"
+                 + "• Check weekly day-wise schedule, time slots, and assigned lecture rooms.<br>"
+                 + "👉 <a href='timetable' style='color:#ffd700;font-weight:700;text-decoration:underline;'>Open Weekly Timetable</a>";
         }
 
-        if (q.contains("notice") || q.contains("circular") || q.contains("news") || q.contains("event") || q.contains("holiday") || q.contains("announcement")) {
-            return "📢 <strong>Official University Notices:</strong><br><br>"
-                 + "• Admins and Faculty broadcast notices for All Users, Students Only, or Faculty Only.<br>"
-                 + "👉 <a href='notices' style='color:#ffd700;font-weight:700;'>Read Latest Notices</a>";
+        if (hasNotice) {
+            return "📢 <strong>Notices & Circulars:</strong><br>"
+                 + "• Official announcements posted by University Admin and Faculty appear here.<br>"
+                 + "👉 <a href='notices' style='color:#ffd700;font-weight:700;text-decoration:underline;'>Read Notices</a>";
         }
 
-        // COMPLAINTS & HELPDESK
-        if (q.contains("complaint") || q.contains("help") || q.contains("support") || q.contains("issue") || q.contains("problem") || q.contains("query")) {
-            return "💬 <strong>Grievance & Redressal Cell:</strong><br><br>"
-                 + "1. <strong>Submit Query:</strong> Log academic or infrastructure complaints directly to administration.<br>"
-                 + "2. <strong>Status Tracker:</strong> Track status (PENDING ➔ IN PROGRESS ➔ RESOLVED).<br><br>"
-                 + "👉 <a href='complaints' style='color:#ffd700;font-weight:700;'>Submit Complaint / Query</a>";
+        if (hasComp) {
+            return "💬 <strong>Helpdesk & Grievances:</strong><br>"
+                 + "• Register complaints regarding academics, fees, or technical issues.<br>"
+                 + "👉 <a href='complaints' style='color:#ffd700;font-weight:700;text-decoration:underline;'>Submit Complaint / Query</a>";
         }
 
-        // ADMIN CONTROLS
-        if (q.contains("admin") || q.contains("control") || q.contains("permission") || q.contains("manage")) {
-            return "🛡️ <strong>System Administrator Powers:</strong><br><br>"
-                 + "• Manage Students (Add, Edit, Assign Roll Numbers & Semester)<br>"
-                 + "• Manage Faculty Members & Department Heads<br>"
-                 + "• Define Departments (B.Tech, BCA, MCA) & Subject Catalog<br>"
-                 + "• Fee Structure Setup & Pending Dues Clearance<br>"
-                 + "• Full Audit Access to Complaints & System Logs";
+        if (hasUser) {
+            return "👥 <strong>User & Module Info:</strong><br>"
+                 + "• <strong>Admin:</strong> Manages Students, Faculty, Departments, Courses & Fees.<br>"
+                 + "• <strong>Faculty:</strong> Marks Attendance, Enters Marks, Posts Notices.<br>"
+                 + "• <strong>Student:</strong> Pays Fees, Checks Marksheets & Attendance Logs.";
         }
 
-        // STUDENT & FACULTY CONTROLS
-        if (q.contains("student") || q.contains("faculty") || q.contains("teacher")) {
-            return "👥 <strong>Role Privileges:</strong><br><br>"
-                 + "👨‍🏫 <strong>Faculty:</strong> Mark class attendance, upload examination marks, broadcast notices.<br>"
-                 + "🎓 <strong>Students:</strong> View attendance %, download printable marksheet, pay online fees, check library books & notices.";
-        }
+        // Generic intelligent fallback for any typed text
+        return "🤖 <strong>ERP AI Assistant Reply:</strong><br>"
+             + "You asked: <em>\"" + original + "\"</em><br><br>"
+             + "I can help you navigate the system! Where would you like to go?<br>"
+             + "• 💳 <a href='fees?action=pay' style='color:#ffd700;font-weight:700;'>Pay Dues & Fees</a><br>"
+             + "• 📝 <a href='marks?action=marksheet' style='color:#ffd700;font-weight:700;'>Check Marksheet</a><br>"
+             + "• 📊 <a href='attendance' style='color:#ffd700;font-weight:700;'>View Attendance Log</a><br>"
+             + "• 📚 <a href='library' style='color:#ffd700;font-weight:700;'>Library Books</a><br>"
+             + "• 💬 <a href='complaints' style='color:#ffd700;font-weight:700;'>Contact Support</a>";
+    }
 
-        // LOGIN / CREDS / TECH STACK
-        if (q.contains("login") || q.contains("password") || q.contains("username") || q.contains("account")) {
-            return "🔐 <strong>Login Information:</strong><br><br>"
-                 + "• <strong>Admin:</strong> username <code>admin</code> / password <code>Manjeet@2007</code><br>"
-                 + "• <strong>Faculty:</strong> username <code>faculty1</code> / password <code>Faculty@123</code><br>"
-                 + "• <strong>Student:</strong> username <code>student1</code> / password <code>Student@123</code>";
+    private boolean containsAny(String[] tokens, String... keywords) {
+        for (String t : tokens) {
+            for (String kw : keywords) {
+                if (t.equalsIgnoreCase(kw) || t.contains(kw) || kw.contains(t)) {
+                    return true;
+                }
+            }
         }
-
-        if (q.contains("who made") || q.contains("developer") || q.contains("manjeet") || q.contains("creator") || q.contains("tech")) {
-            return "🏛️ <strong>University ERP System Details:</strong><br><br>"
-                 + "• <strong>Institution:</strong> University of Lucknow, Lucknow<br>"
-                 + "• <strong>Developer:</strong> Manjeet Singh<br>"
-                 + "• <strong>Architecture:</strong> Java 21, Jakarta EE 10, Servlet 6.0, Tomcat 10.1<br>"
-                 + "• <strong>Cloud Stack:</strong> Render Web Service + Railway MySQL 8.0";
-        }
-
-        // DEFAULT HELP RESPONSE
-        return "🤖 <strong>I am your University ERP AI Assistant!</strong><br><br>"
-             + "I can help you step-by-step with:<br>"
-             + "1. 💳 <strong>Fees:</strong> How to pay or check pending dues.<br>"
-             + "2. 📝 <strong>Marks:</strong> How to generate A4 print marksheets.<br>"
-             + "3. 📊 <strong>Attendance:</strong> Checking logs or entering class attendance.<br>"
-             + "4. 📚 <strong>Library:</strong> Finding books and checking return dates.<br>"
-             + "5. 📢 <strong>Notices & Timetable:</strong> Schedule & circulars.<br>"
-             + "6. 🔑 <strong>Login & Roles:</strong> Admin, Faculty, and Student credentials.<br><br>"
-             + "Try asking a question like <em>'How to pay fees?'</em> or <em>'Where is my marksheet?'</em>!";
+        return false;
     }
 }

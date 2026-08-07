@@ -122,6 +122,7 @@
 <div id="aiChatbotTrigger" title="Drag me anywhere or Click to Chat!">
     <i class="fa-solid fa-robot"></i>
     <span class="badge-dot"></span>
+    <div class="chatbot-flag-bubble">💡 May I Help You? Chat with AI</div>
 </div>
 
 <div id="aiChatbotWidget">
@@ -160,6 +161,16 @@
 </div>
 
 <script>
+    // --- ATTACH DIRECTLY TO DOCUMENT.BODY TO FIX ADMIN PANEL CONTAINER CLIP ---
+    document.addEventListener("DOMContentLoaded", function() {
+        const trigger = document.getElementById('aiChatbotTrigger');
+        const widget = document.getElementById('aiChatbotWidget');
+        if (trigger && widget) {
+            document.body.appendChild(trigger);
+            document.body.appendChild(widget);
+        }
+    });
+
     // --- DRAGGABLE WIDGET LOGIC ---
     (function makeDraggable() {
         const trigger = document.getElementById('aiChatbotTrigger');
