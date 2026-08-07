@@ -39,7 +39,7 @@
         .print-only { display: none; }
 
         @media print {
-            @page { margin: 12mm 15mm; size: A4 portrait; }
+            @page { margin: 10mm 12mm; size: A4 landscape; }
 
             html, body {
                 background: #ffffff !important;
