@@ -111,7 +111,7 @@
     <div class="sidebar-footer">
         <i class="fa-solid fa-university" style="color:var(--gold);margin-bottom:6px;font-size:18px;"></i>
         <p style="font-size:11px;font-weight:700;color:var(--gold-light);margin-bottom:2px;">University of Lucknow, Lucknow</p>
-        <p style="font-size:10px;color:var(--text-muted);">&copy; 2024 All Rights Reserved</p>
+        <p style="font-size:10px;color:var(--text-muted);">&copy; 2025 <strong>University of Lucknow, Lucknow</strong>. All Rights Reserved.</p>
         <p style="font-size:10px;color:var(--text-muted);">Developed by <strong style="color:var(--gold-light);">Manjeet Singh</strong></p>
     </div>
 </aside>

@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,7 +111,7 @@
 
         <!-- FOOTER COPYRIGHT & RESERVED -->
         <footer style="margin-top: 24px; text-align: center; color: var(--text-muted); font-size: 13px;">
-            <p style="margin-bottom: 4px;">&copy; 2024 <strong>University of Lucknow, Lucknow</strong>. All Rights Reserved.</p>
+            <p style="margin-bottom: 4px;">&copy; 2025 <strong>University of Lucknow, Lucknow</strong>. All Rights Reserved.</p>
             <p style="color: var(--gold-light); font-weight: 700;">Developed by <strong>Manjeet Singh</strong></p>
         </footer>
     </div>
